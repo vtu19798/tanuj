@@ -1,0 +1,66 @@
+ # i n c l u d e <Arduino . h>
+2 / / I n c l u d e WiFi l i b r a r i e s ba sed on t h e t y p e of boa rd b ei n g used
+3 # i f d e fi n e d ( ESP32 )
+4 # i n c l u d e <WiFi . h>
+5 # e l i f d e fi n e d ( ESP8266 )
+6 # i n c l u d e <ESP8266WiFi . h>
+7 # e n d i f
+8 # i n c l u d e <Wi FiCli e nt . h> / / C l i e n t w i fi c o n n e c t i o n l i b r a r y
+9 # i n c l u d e <Thing Speak . h> / / Thing Speak Cloud l i b r a r y
+10 # d e fi n e WIFI SSID ”TP−Link 8E98 ” / / WiFi SSID
+11 # d e fi n e WIFI PASSWORD ” 86427920 ” / / WiFi password
+12
+13 Wi F iCli e nt c l i e n t ; / / WiFi c l i e n t c o n fi g u r a t i o n
+14 u n si g n e d lon g myChannelNumber = 2394057 ; / / Thing Speak c ha n n e l number
+15 co n st c ha r * myWriteAPIKey = ”Y769PAN3DWTKA14C” ; / / Thing Speak Write API key
+16 S t ri n g r e a d st r i n g = ” ” ; / / Va ri a b l e t o st o r e incoming d a t a from s e r i a l p o r t
+17 S t ri n g wa t e rl e v e l ; / / Va ri a b l e t o st o r e wa t e r l e v e l d a t a
+18 i n t i nd 1 ; / / Index v a r i a b l e
+19 vo i d s e t u p ( ) {
+20 S e r i a l . b e g i n (9 6 0 0 ) ; / / I n i t i a l i z e s e r i a l communication
+21 S e r i a l . p r i n t l n ( ) ;
+22 S e r i a l . p r i n t ( ” Co n n e ct i ng t o AP” ) ;
+23 WiFi . b e g i n ( WIFI SSID , WIFI PASSWORD) ; / / Connect t o WiFi network
+24
+25 / / Wait f o r WiFi c o n n e c t i o n
+26 whi l e ( WiFi . st a t u s ( ) != WL CONNECTED) {
+27 S e r i a l . p r i n t ( ” . ” ) ;
+28 d e l a y (2 0 0 ) ;
+29 }
+30
+31 S e r i a l . p r i n t l n ( ” ” ) ;
+32 S e r i a l . p r i n t l n ( ” WiFi c o n n e ct e d . ” ) ;
+33 S e r i a l . p r i n t l n ( ” IP a d d r e ss : ” ) ;
+34 S e r i a l . p r i n t l n ( WiFi . l o c a l I P ( ) ) ; / / P r i n t l o c a l IP a d d r e ss
+35 S e r i a l . p r i n t l n ( ) ;
+36
+37
+38 }
+Thing Speak . b eg i n ( c l i e n t ) ; / / I n i t i a l i z e Thing Speak c l i e n t
+39
+40 vo i d l oop ( ) {
+41 r e a d st r i n g = ” ” ; / / Re s e t t h e v a ri a b l e t o st o r e incoming d a t a
+42
+43 / / Read d a t a from s e r i a l p o rt
+44 whi l e ( S e r i a l . a v a i l a b l e ( ) ) {
+45 d e l a y ( 1 0 ) ; / / Delay added t o e n su r e st a b i l i t y
+46 c ha r c = S e r i a l . r e a d ( ) ; / / Read a c h a r a c t e r from s e r i a l p o rt
+47
+30
+48 / / Ex i t t h e lo op when ’# ’ i s d e t e c t e d a f t e r t h e word
+49 i f ( c == ’ # ’ ) {
+50 br ea k ;
+51 }
+52 r e a d st r i n g += c ; / / Bu i ld t h e st r i n g
+53 }
+54
+55 / / Check i f d a t a is r e c e i v e d
+56 i f ( r e a d st r i n g . l e n g t h ( ) > 0 ) {
+57 S e r i a l . p r i n t l n ( r e a d st r i n g ) ; / / P r i n t r e c e i v e d da t a
+58
+59 wa t e rl e v e l = r e a d st r i n g ; / / S t o r e r e c e i v e d d a t a i n w a t e r l e v e l v a ri a b l e
+60
+61 S e r i a l . p r i n t ( ” Water Level : ” ) ;
+62 S e r i a l . p r i n t l n ( wa t e r l e v e l ) ; / / P r i n t wa t er l e v e l d a t a
+63
+64 Thing Speak . s e
